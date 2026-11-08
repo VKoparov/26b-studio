@@ -147,6 +147,7 @@ h1 > span {
   filter: drop-shadow(0 12px 10px #20211e25);
 }
 .sign {
+  container-type: inline-size;
   --angle: -11deg;
   width: 194px;
   height: 228px;
@@ -169,8 +170,9 @@ h1 > span {
 }
 .sign-title {
   display: block;
-  font-size: 28px;
-  letter-spacing: -1.5px;
+  font-size: 16cqw;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
   line-height: 0.98;
   font-weight: 900;
 }
@@ -392,9 +394,6 @@ footer a:hover {
     top: 7%;
     padding: 23px 12px 12px;
   }
-  .sign-title {
-    font-size: 22px;
-  }
   .sign-small {
     font-size: 6px;
   }
@@ -433,8 +432,20 @@ footer a:hover {
   }
 }
 @media (max-width: 640px) {
+  .site-shell {
+    min-height: 100svh;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding-top: env(safe-area-inset-top);
+  }
+  main {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
   .header {
-    height: 88px;
+    height: clamp(56px, 9svh, 76px);
     margin-inline: 6%;
   }
   .brand {
@@ -451,62 +462,80 @@ footer a:hover {
   }
   .playground {
     height: auto;
-    min-height: 760px;
+    min-height: 0;
+    max-height: none;
+    // Reserve enough room for content on very short screens or with enlarged text.
+    display: grid;
+    grid-template-rows: auto minmax(80px, 1fr) auto;
   }
   .intro {
-    padding-top: 66px;
+    padding-top: clamp(12px, 3svh, 30px);
     max-width: 94%;
   }
   .eyebrow {
     font-size: 8px;
     letter-spacing: 1px;
-    margin-bottom: 25px;
+    margin-bottom: clamp(12px, 2.5svh, 22px);
   }
   h1 {
-    font-size: clamp(45px, 11.7vw, 75px);
+    font-size: clamp(36px, min(11.7vw, 7.8svh), 75px);
     letter-spacing: -0.075em;
   }
   .description {
     font-size: 13px;
-    margin-top: 23px;
+    margin: clamp(12px, 2.5svh, 23px) 0 16px;
   }
   .project-button {
-    padding: 16px 20px;
+    padding: 12px 20px;
+    min-height: 44px;
     font-size: 12px;
     gap: 30px;
   }
-  .sign {
-    top: auto;
-    bottom: 102px;
-    left: 8%;
-    width: 142px;
-    height: 176px;
+  .objects {
+    top: clamp(230px, 36svh, 310px);
+    bottom: 100px;
   }
-  .sign-title {
-    font-size: 21px;
+  .sign {
+    top: 12%;
+    bottom: auto;
+    left: 7%;
+    width: clamp(100px, 29vw, 142px);
+    height: clamp(120px, 22svh, 176px);
+    padding: 20px 10px 10px;
+  }
+  .sign-small {
+    font-size: 4.5cqw;
+    letter-spacing: 0;
+    padding-bottom: 10px;
+  }
+  .sign-bottom {
+    font-size: 5cqw;
+    margin-top: 8px;
+    padding-top: 6px;
   }
   .asterisk {
-    top: auto;
-    bottom: 211px;
-    right: 6%;
-    width: 100px;
-    height: 100px;
+    top: -5%;
+    bottom: auto;
+    right: 2%;
+    width: clamp(72px, 13svh, 100px);
+    height: clamp(72px, 13svh, 100px);
   }
   .asterisk span {
-    font-size: 122px;
+    font-size: clamp(88px, 16svh, 122px);
   }
   .ring {
-    width: 100px;
-    height: 100px;
+    width: clamp(72px, 13svh, 100px);
+    height: clamp(72px, 13svh, 100px);
     border-width: 15px;
-    bottom: 84px;
-    left: 49%;
+    top: 40%;
+    bottom: auto;
+    left: 40%;
   }
   .block {
-    width: 106px;
-    height: 106px;
-    bottom: 86px;
-    right: 4%;
+    width: clamp(82px, 14svh, 106px);
+    height: clamp(82px, 14svh, 106px);
+    bottom: 0;
+    right: 8%;
     padding: 12px;
   }
   .block > span:first-child {
@@ -521,9 +550,15 @@ footer a:hover {
     display: none;
   }
   .playground-tools {
-    left: 6%;
-    right: 6%;
-    bottom: 18px;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    margin: 0 6% 6px;
+    grid-row: 3;
+  }
+  .playground-actions .reset {
+    min-height: 44px;
   }
   .playground-tools p {
     font-size: 8px;
@@ -534,14 +569,15 @@ footer a:hover {
     font-size: 9px;
   }
   .safety-tape {
-    padding-block: 12px;
+    padding-block: 8px;
   }
   .safety-tape span {
     font-size: 12px;
   }
   footer {
     flex-wrap: wrap;
-    padding: 23px 6%;
+    min-height: 44px;
+    padding: 10px 6% max(10px, env(safe-area-inset-bottom));
     font-size: 9px;
     gap: 16px;
   }
@@ -563,6 +599,8 @@ footer a:hover {
   pointer-events: none;
 }
 .playground-actions {
+  width: 156px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -572,6 +610,9 @@ footer a:hover {
   border-radius: 3px;
 }
 .playground-actions .reset {
+  width: 100%;
+  text-align: right;
+  white-space: nowrap;
   padding-block: 5px;
 }
 .drop-button:disabled {
